@@ -1,0 +1,12 @@
+startCDH.sh
+
+hadoop fs -ls
+hadoop fs -mkdir newfolder1
+hadoop fs -put /home/hadoop/Desktop/samp.txt newfolder1 (source to dest)
+hadoop fs -get /home/hadoop/Desktop/samp.txt newfolder1 (source to dest)
+hadoop fs -ls
+hadoop fs -cat newfolder1/samp.txt
+hadoop fs -cat newfolder1/samp.txt | head
+hadoop fs -tail newfolder1/samp.txt
+hadoop fs -rm newfolder1/samp.txt
+hadoop fs -rmdir newfolder1

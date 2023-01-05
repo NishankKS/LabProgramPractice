@@ -1,0 +1,11 @@
+sudo apt install gcc
+
+#include<stdio.h>
+int main(){
+printf("Hello World!");
+return 0;
+}
+
+
+gcc demo.c
+./a.out
