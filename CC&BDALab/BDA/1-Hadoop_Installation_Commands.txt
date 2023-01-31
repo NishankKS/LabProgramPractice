@@ -1,46 +1,38 @@
-Prerequisite Test
-=============================
 sudo apt update
-
-(sudo apt upgrade)
+sudo apt upgrade
 
 sudo apt install openjdk-8-jdk -y
-
-java -version; javac -version
+java -version 
+javac -version
 sudo apt install openssh-server openssh-client -y
-sudo adduser hdoop
-su - hdoop
+
+sudo adduser nishank
+su nishank
+
+su root
+nano /etc/sudoers
+
+nishank ALL=(ALL)  ALL
+
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 0600 ~/.ssh/authorized_keys
 ssh localhost
 
-Downloading Hadoop (Please note link is updated to new version of hadoop here on 6th May 2022)
-===============================
+
 wget https://downloads.apache.org/hadoop/common/hadoop-3.3.4/hadoop-3.3.4.tar.gz
 tar xzf hadoop-3.3.4.tar.gz
-##mv hadoop-3.3.4 havish
+
 
 Editng 6 important files
 =================================
 1st file
 ===========================
-##sudo nano .bashrc -  here you might face issue saying hdoop is not sudo user 
-##if this issue comes then
-##su - aman
+sudo nano .bashrc 
 
 
 
-
-
-
-sudo adduser hdoop sudo
-
-sudo nano .bashrc
-#Add below lines in this file
-
-#Hadoop Related Options
-export HADOOP_HOME=/home/hdoop/hadoop-3.3.4
+export HADOOP_HOME=/home/nishank/hadoop-3.3.4
 export HADOOP_INSTALL=$HADOOP_HOME
 export HADOOP_MAPRED_HOME=$HADOOP_HOME
 export HADOOP_COMMON_HOME=$HADOOP_HOME
@@ -57,18 +49,18 @@ source ~/.bashrc
 ============================
 sudo nano $HADOOP_HOME/etc/hadoop/hadoop-env.sh
 
-#Add below line in this file in the end
-find 
+
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
-3rd File find the system localhost name by giving hostnamectl
+3rd File 
 ===============================
 sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
 
-#Add below lines in this file(between "<configuration>" and "<"/configuration>")
+between "<configuration>" and "<"/configuration>"
+
    <property>
         <name>hadoop.tmp.dir</name>
-        <value>/home/hdoop/tmpdata</value>
+        <value>/home/nishank/tmpdata</value>
         <description>A base for other temporary directories.</description>
     </property>
     <property>
@@ -79,19 +71,18 @@ sudo nano $HADOOP_HOME/etc/hadoop/core-site.xml
 
 4th File 
 ====================================
-create namenode and datanode directories by giving $mkdir -P ~/hadoopdata/hdfs/{namenode,datanode}
 sudo nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml
 
-#Add below lines in this file(between "<configuration>" and "<"/configuration>")
+between "<configuration>" and "<"/configuration>"
 
 
 <property>
   <name>dfs.data.dir</name>
-  <value>/home/hdoop/dfsdata/namenode</value>
+  <value>/home/nishank/dfsdata/namenode</value>
 </property>
 <property>
   <name>dfs.data.dir</name>
-  <value>/home/hdoop/dfsdata/datanode</value>
+  <value>/home/nishank/dfsdata/datanode</value>
 </property>
 <property>
   <name>dfs.replication</name>
@@ -105,7 +96,7 @@ sudo nano $HADOOP_HOME/etc/hadoop/hdfs-site.xml
 
 sudo nano $HADOOP_HOME/etc/hadoop/mapred-site.xml
 
-#Add below lines in this file(between "<configuration>" and "<"/configuration>")
+between "<configuration>" and "<"/configuration>"
 
 <property>
   <name>mapreduce.framework.name</name>
@@ -114,10 +105,10 @@ sudo nano $HADOOP_HOME/etc/hadoop/mapred-site.xml
 
 6th File
 ==================================================
-Get your system ip address by giving ip a
+
 sudo nano $HADOOP_HOME/etc/hadoop/yarn-site.xml
 
-#Add below lines in this file(between "<configuration>" and "<"/configuration>")
+between "<configuration>" and "<"/configuration>"
 
 <property>
   <name>yarn.nodemanager.aux-services</name>
@@ -145,15 +136,15 @@ Launching Hadoop
 ==================================
 hdfs namenode -format
 
-start hadoop services go inside hadoop directory i.e cd ~/havish/sbin
-ls -lrt
+Go inside sbin
+start-all.sh
+stop-all.sh
+
+
 ./start-dfs.sh
 ./start-yarn.sh
+
 jps
-
-try to move a local file to hdfs by the method shown in video
-
-
 
 
 
