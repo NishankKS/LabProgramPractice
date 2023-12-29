@@ -1,0 +1,80 @@
+https://chat.openai.com/share/173f2c91-0dca-4536-b306-4189968b15eb
+
+7B
+def simple_sentiment_analysis(text):
+    # Define a simple sentiment lexicon (positive and negative words)
+    positive_words = ['good', 'happy', 'excellent', 'positive']
+    negative_words = ['bad', 'sad', 'poor', 'negative']
+
+    # Tokenize the text into words
+    words = text.lower().split()
+
+    # Calculate sentiment score based on the number of positive and negative words
+    sentiment_score = sum(1 for word in words if word in positive_words) - sum(1 for word in words if word in negative_words)
+
+    # Determine sentiment label based on the sentiment score
+    if sentiment_score > 0:
+        sentiment_label = 'Positive'
+    elif sentiment_score < 0:
+        sentiment_label = 'Negative'
+    else:
+        sentiment_label = 'Neutral'
+
+    return sentiment_label
+
+
+
+import requests
+from bs4 import BeautifulSoup
+
+url = 'https://example.com'
+response = requests.get(url)
+
+if response.status_code == 200:
+    soup = BeautifulSoup(response.content, 'html.parser')
+    title = soup.title.text if soup.title else 'No title found'
+    links = [link.get('href') for link in soup.find_all('a')]
+    
+    print(f'Title: {title}\nLinks on the page: {links}')
+else:
+    print(f'Failed to retrieve data. Status code: {response.status_code}') 
+
+
+
+from transformers import pipeline, AutoModelForSeq2SeqLM, AutoTokenizer
+
+def extractive_summarization(text):
+    summarizer = pipeline("summarization")
+    summary = summarizer(text, max_length=150)
+    return summary[0]['summary_text']
+
+def abstractive_summarization(text, model_name="t5-base"):
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    inputs = tokenizer(text, return_tensors="pt", max_length=512)
+    outputs = model.generate(**inputs, max_length=150)
+
+    summary = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    return summary
+
+# Example text
+input_text = """
+    Pop!_OS is maintained primarily
+by System76, with the release version source code hosted in a GitHub
+repository. Unlike many other Linux distributions, it is not
+community-driven, although outside programmers can contribute, view
+and modify the source code. They can also build custom ISO images and
+redistribute them under another name.
+"""
+
+# Extractive Summarization
+extractive_summary = extractive_summarization(input_text)
+print("Extractive Summary:")
+print(extractive_summary)
+print()
+
+# Abstractive Summarization
+abstractive_summary = abstractive_summarization(input_text)
+print("Abstractive Summary:")
+print(abstractive_summary)
